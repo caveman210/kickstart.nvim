@@ -2,4 +2,21 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
-return {}
+return {
+  {
+    {
+      dir = '~/.config/nvim/lua/custom/plugins/terminal.nvim',
+      keys = {
+        {
+          '<C-t>',
+
+          function()
+            require('terminal').create_term()
+          end,
+
+          desc = 'Open Terminal Window',
+        },
+      },
+    },
+  },
+}
