@@ -239,7 +239,6 @@ rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
   'catppuccin/nvim',
 
   -- NOTE: Plugins can also be added by using a table,
@@ -275,6 +274,35 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
     },
+  },
+
+  {
+    'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
+    config = function()
+      require('guess-indent').setup {
+        auto_cmd = true, -- Set to false to disable automatic execution
+        override_editorconfig = false, -- Set to true to override settings set by .editorconfig
+        filetype_exclude = { -- A list of filetypes for which the auto command gets disabled
+          'netrw',
+          'tutor',
+        },
+        buftype_exclude = { -- A list of buffer types for which the auto command gets disabled
+          'help',
+          'nofile',
+          'terminal',
+          'prompt',
+        },
+        on_tab_options = { -- A table of vim options when tabs are detected
+          ['expandtab'] = false,
+        },
+        on_space_options = { -- A table of vim options when spaces are detected
+          ['expandtab'] = true,
+          ['tabstop'] = 'detected', -- If the option value is 'detected', The value is set to the automatically detected indent size.
+          ['softtabstop'] = 'detected',
+          ['shiftwidth'] = 'detected',
+        },
+      }
+    end,
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -775,6 +803,15 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        formatters_by_ft = {
+          lua = { 'stylua' },
+          sh = { 'shfmt' },
+          fish = { 'fish_indent' },
+          go = { 'gofmt' },
+          rust = { 'rustfmt' },
+          c = { 'clang_format' },
+          cpp = { 'clang_format' },
+        },
       },
     },
   },
@@ -852,7 +889,7 @@ require('lazy').setup({
       completion = {
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
-        documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
       },
 
       sources = {
